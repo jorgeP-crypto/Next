@@ -63,7 +63,7 @@ def takeCommand():
     with sr.Microphone() as source:
         r.energy_threshold = 10000  # this increasing the hearing threshold to allow the smallest sound to be heard
         r.adjust_for_ambient_noise(source, 1.2)  # this reducing background noise
-        r.pause_threshold = 1  # time taken to receive input
+        r.pause_threshold = 2  # time taken to receive input
         audio = r.listen(source)
         print("Listening...")
 
@@ -87,7 +87,7 @@ def takeCommand():
 ###############################################################################
 
 # Greetings function
-def greeting():
+def greeting(name_assistant):
     hour = int(datetime.datetime.now().hour)
     if 0 <= hour < 12:
         speak("Good Morning!")
@@ -139,7 +139,7 @@ def sendEmail(to, content):
 
 # CALLING THE GREETING FUNCTION
 # greeting()
-speak('Hello')
+# speak('Hello')
 
 
 ###############################################################################
@@ -155,9 +155,9 @@ def Process_audio():
             # clear = lambda: os.system('cls')
 
             # clear()
-        # greeting()
+        
         name_assistant = "Next"
-
+        greeting(name_assistant)
         while True:
 
             app_string = ["open word", "open powerpoint", "open excel", "open zoom", "open notepad"]
@@ -180,7 +180,7 @@ def Process_audio():
 
             elif "hello" in query: 
                 # in query or name_assistant 
-                greeting()
+                greeting(name_assistant)
 
             elif 'how are you' in query:
                 speak("I am fine, Thank you")
@@ -486,13 +486,13 @@ def Process_audio():
                     # Google Open weather website to get API of Open weather
                 api_key = "56c5f7d9be5e74534aa8a4aeb839f785"
                 base_url = "http://api.openweathermap.org/data/2.5/weather?"
-                speak(" City name_assistant ")
-                print("City name_assistant : ")
+                speak(" City name")
+                print("City name: ")
                 city_name = takeCommand()
                 complete_url = base_url + "appid =" + api_key + "&q =" + city_name
                 response = requests.get(complete_url)
                 x = response.json()
-
+                print(x)
                 if x["code"] != "404":
                     y = x["main"]
                     current_temperature = y["temp"]
@@ -547,41 +547,41 @@ def Process_audio():
 
 Process_audio()
 
-# def info():
-#    info_screen = Toplevel(screen)
-#    info_screen.title("Info")
-#    info_screen.iconbitmap('app_icon.ico')
+def info():
+   info_screen = Toplevel(screen)
+   info_screen.title("Info")
+   info_screen.iconbitmap('app_icon.ico')
 
-#    creator_label = Label(info_screen, text="Created by George Antwi")
-#    creator_label.pack()
+   creator_label = Label(info_screen, text="Created by George Antwi")
+   creator_label.pack()
 
-#    age_label = Label(info_screen, text=" at the age of 12")
-#    age_label.pack()
+   age_label = Label(info_screen, text=" at the age of 12")
+   age_label.pack()
 
-#    for_label = Label(info_screen, text="For Makers-pace")
-#    for_label.pack()
-
-
-# def main_screen():
-#    global screen
-#    screen = Tk()
-#    screen.title(name_assistant)
-#    screen.geometry("700x550")
-#    screen.iconbitmap('.\app_icon.ico')
-
-#    name_label = Label(text=name_assistant, width=300, bg="black", fg="white", font=("Calibri", 13))
-#    name_label.pack()
-
-#    microphone_photo = PhotoImage(file="assistant_logo.png")
-#    microphone_button = Button(image=microphone_photo, command=Process_audio)
-#    microphone_button.pack(pady=10)
-
-#    info_button = Button(text="Info", command=info)
-#    info_button.pack(pady=10)
-
-#    screen.mainloop()
+   for_label = Label(info_screen, text="For Makers-pace")
+   for_label.pack()
 
 
-# main_screen()
+def main_screen():
+   global screen
+   screen = Tk()
+   screen.title(name_assistant)
+   screen.geometry("700x550")
+   screen.iconbitmap('.\app_icon.ico')
+
+   name_label = Label(text=name_assistant, width=300, bg="black", fg="white", font=("Calibri", 13))
+   name_label.pack()
+
+   microphone_photo = PhotoImage(file="assistant_logo.png")
+   microphone_button = Button(image=microphone_photo, command=Process_audio)
+   microphone_button.pack(pady=10)
+
+   info_button = Button(text="Info", command=info)
+   info_button.pack(pady=10)
+
+   screen.mainloop()
+
+
+main_screen()
 
 
