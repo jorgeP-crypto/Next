@@ -3,10 +3,10 @@
 ###############################################################################
 import random
 import subprocess
-# import tkinter
+import tkinter
 import wolframalpha
 import pyttsx3
-# from tkinter import *
+from tkinter import *
 import json
 import speech_recognition as sr
 import datetime
@@ -24,6 +24,7 @@ from twilio.rest import Client
 from ecapture import ecapture as ec
 from urllib.request import urlopen
 import randfacts
+from newsapi import NewsApiClient
 # from gui import *
 
 
@@ -49,7 +50,7 @@ def speak(audio):
 ###############################################################################
 # name of the project
 ###############################################################################
-#name_assistant = "Next"
+name_assistant = "Next"
 
 
 ###############################################################################
@@ -141,6 +142,34 @@ def sendEmail(to, content):
 # greeting()
 # speak('Hello')
 
+# def news():
+#     newsapi = NewsApiClient(api_key='5840b303fbf949c9985f0e1016fc1155')
+#     speak("What topic you need the news about")
+#     topic = takeCommand()
+#     data = newsapi.get_top_headlines(q=topic, language="en", page_size=5)
+#     newsData = data["articles"]
+#     for y in newsData:
+#         speak(y["description"])
+
+
+
+
+def weather(city):
+    # city = "Kumasi"
+    res = requests.get(
+        f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid=16f0afad2fd9e18b7aee9582e8ce650b&units=metric").json()
+    temp1 = res["weather"][0]["description"]
+    temp2 = res["main"]["temp"]
+    print(f"Temperature is {format(temp2)} degree Celsius \nWeather is {format(temp1)}")
+    speak(f"Temperature is {format(temp2)} degree Celsius \nWeather is {format(temp1)}")
+
+
+
+
+
+
+
+
 
 ###############################################################################
 #                # DRIVER FUNCTION #                                          #
@@ -156,7 +185,7 @@ def Process_audio():
 
             # clear()
         
-        name_assistant = "Next"
+        global name_assistant
         greeting(name_assistant)
         while True:
 
@@ -180,7 +209,8 @@ def Process_audio():
 
             elif "hello" in query: 
                 # in query or name_assistant 
-                greeting(name_assistant)
+                # greeting(name_assistant)
+                speak("Next at your service.")
 
             elif 'how are you' in query:
                 speak("I am fine, Thank you")
@@ -482,31 +512,36 @@ def Process_audio():
 
                 # Gives a report on the weather using the Openweathermap api
             elif "weather" in query:
-
-                    # Google Open weather website to get API of Open weather
-                api_key = "56c5f7d9be5e74534aa8a4aeb839f785"
-                base_url = "http://api.openweathermap.org/data/2.5/weather?"
-                speak(" City name")
-                print("City name: ")
+                print("Which city do you want to know it's weather?")
+                speak("Which city do you want to know it's weather?")
                 city_name = takeCommand()
-                complete_url = base_url + "appid =" + api_key + "&q =" + city_name
-                response = requests.get(complete_url)
-                x = response.json()
-                print(x)
-                if x["code"] != "404":
-                    y = x["main"]
-                    current_temperature = y["temp"]
-                    current_pressure = y["pressure"]
-                    current_humidiy = y["humidity"]
-                    z = x["weather"]
-                    weather_description = z[0]["description"]
-                    print(" Temperature (in kelvin unit) = " + str(
-                    current_temperature) + "\n atmospheric pressure (in hPa unit) =" + str(
-                    current_pressure) + "\n humidity (in percentage) = " + str(
-                    current_humidiy) + "\n description = " + str(weather_description))
+                weather(city_name)
+                
+                
+                # Google Open weather website to get API of Open weather
+                # api_key = "56c5f7d9be5e74534aa8a4aeb839f785"
+                # base_url = "http://api.openweathermap.org/data/2.5/weather?"
+                # speak(" City name")
+                # print("City name: ")
+                # city_name = takeCommand()
+                # complete_url = base_url + "appid =" + api_key + "&q =" + city_name
+                # response = requests.get(complete_url)
+                # x = response.json()
+                # print(x)
+                # if x["code"] != "404":
+                #     y = x["main"]
+                #     current_temperature = y["temp"]
+                #     current_pressure = y["pressure"]
+                #     current_humidiy = y["humidity"]
+                #     z = x["weather"]
+                #     weather_description = z[0]["description"]
+                #     print(" Temperature (in kelvin unit) = " + str(
+                #     current_temperature) + "\n atmospheric pressure (in hPa unit) =" + str(
+                #     current_pressure) + "\n humidity (in percentage) = " + str(
+                #     current_humidiy) + "\n description = " + str(weather_description))
 
-                else:
-                    speak(" City Not Found ")
+                # else:
+                #     speak(" City Not Found ")
 
             elif "send message " in query:
                     # You need to create an account on Twilio to use this service
@@ -540,7 +575,7 @@ def Process_audio():
                     print("No results")
 
                 # this exits the application
-            elif 'exit' in query:
+            elif 'exit' in query or 'bye-bye' in query or 'bye' in query:
                 speak("Thanks for giving me your time")
                 exit()
 
@@ -548,38 +583,39 @@ def Process_audio():
 Process_audio()
 
 def info():
-   info_screen = Toplevel(screen)
-   info_screen.title("Info")
-   info_screen.iconbitmap('app_icon.ico')
+    info_screen = Toplevel(screen)
+    info_screen.title("Info")
+    info_screen.iconbitmap('app_icon.ico')
 
-   creator_label = Label(info_screen, text="Created by George Antwi")
-   creator_label.pack()
+    creator_label = Label(info_screen, text="Created by George Antwi")
+    creator_label.pack()
 
-   age_label = Label(info_screen, text=" at the age of 12")
-   age_label.pack()
+    age_label = Label(info_screen, text=" at the age of 12")
+    age_label.pack()
 
-   for_label = Label(info_screen, text="For Makers-pace")
-   for_label.pack()
+    for_label = Label(info_screen, text="For Makers-pace")
+    for_label.pack()
 
 
 def main_screen():
-   global screen
-   screen = Tk()
-   screen.title(name_assistant)
-   screen.geometry("700x550")
-   screen.iconbitmap('.\app_icon.ico')
+    global screen
+    # name_assistant = "Next"
+    screen = Tk()
+    screen.title(name_assistant)
+    screen.geometry("700x550")
+    screen.iconbitmap('.\app_icon.ico')
 
-   name_label = Label(text=name_assistant, width=300, bg="black", fg="white", font=("Calibri", 13))
-   name_label.pack()
+    name_label = Label(text=name_assistant, width=300, bg="black", fg="white", font=("Calibri", 13))
+    name_label.pack()
 
-   microphone_photo = PhotoImage(file="assistant_logo.png")
-   microphone_button = Button(image=microphone_photo, command=Process_audio)
-   microphone_button.pack(pady=10)
+    microphone_photo = PhotoImage(file="assistant_logo.png")
+    microphone_button = Button(image=microphone_photo, command=Process_audio)
+    microphone_button.pack(pady=10)
 
-   info_button = Button(text="Info", command=info)
-   info_button.pack(pady=10)
+    info_button = Button(text="Info", command=info)
+    info_button.pack(pady=10)
 
-   screen.mainloop()
+    screen.mainloop()
 
 
 main_screen()
