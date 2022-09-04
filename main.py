@@ -24,8 +24,8 @@ from twilio.rest import Client
 from ecapture import ecapture as ec
 from urllib.request import urlopen
 import randfacts
-from newsapi import NewsApiClient
-# from gui import *
+from newsapi import *
+from gui import *
 
 
 
@@ -67,15 +67,19 @@ def takeCommand():
         r.pause_threshold = 2  # time taken to receive input
         audio = r.listen(source)
         print("Listening...")
+        gui('Listening')
 
     try:
         print("Recognizing...")
+        gui("Recognizing...")
         query = r.recognize_google(audio)
         print(f"User said: {query}\n")
+        gui(f"User said: {query}\n")
 
     except Exception as e:
         print(e)
         print("Unable to Recognize your voice.")
+        gui("Unable to Recognize your voice.")
         return "None"
 
     return query
@@ -92,18 +96,24 @@ def greeting(name_assistant):
     hour = int(datetime.datetime.now().hour)
     if 0 <= hour < 12:
         speak("Good Morning!")
+        gui("Good morning")
 
     elif 12 <= hour < 18:
         speak("Good Afternoon!")
+        gui("Good afternoon")
 
     else:
         speak("Good evening")
+        gui("Good evening")
 
-    speak("My name is {}, your personal assistant.".format(name_assistant))
+    speak("My name is {}.".format(name_assistant))
     print(f"My name is {name_assistant}, your personal assistant.")
+    gui(f"My name is {name_assistant}, your personal assistant.")
     speak("Please, how may I help you?")
-    print("Please, how may i help you?")
+    print("Please, how may I help you?")
+    gui("Please, how may I help you?")
     print("listening...")
+    gui("listening...")
 
 
 ###############################################################################
@@ -121,6 +131,7 @@ def date():
 
     speak("Today is " + month_names[month_name - 1] + " " + ordinal_names[day_name - 1] + '.')
     print("Today is " + month_names[month_name - 1] + " " + ordinal_names[day_name - 1] + '.')
+    gui("Today is " + month_names[month_name - 1] + " " + ordinal_names[day_name - 1] + '.')
 
 
 ###############################################################################
@@ -162,6 +173,7 @@ def weather(city):
     temp2 = res["main"]["temp"]
     print(f"Temperature is {format(temp2)} degree Celsius \nWeather is {format(temp1)}")
     speak(f"Temperature is {format(temp2)} degree Celsius \nWeather is {format(temp1)}")
+    gui(f"Temperature is {format(temp2)} degree Celsius \nWeather is {format(temp1)}")
 
 
 
@@ -202,9 +214,10 @@ def Process_audio():
                 # GREETING MESSAGES #
                 ###############################################################################
             #print(name_assistant)
-            if "Good Morning" in query or "Good Afternoon" in query or "Good evening" in query:
+            if ("Good" and "Morning") in query or ("Good" and "Afternoon") in query or ("Good" and "evening") in query:
+                gui(f"A warm {query}")
                 speak("A warm" + query)
-                speak("How are you Mister")
+                speak("How are you?")
                 speak(name_assistant)
 
             elif "hello" in query: 
@@ -214,7 +227,7 @@ def Process_audio():
 
             elif 'how are you' in query:
                 speak("I am fine, Thank you")
-                speak("How are you, Sir")
+                speak("How are you?")
 
             elif 'fine' in query or "good" in query:
                 speak("It's good to know that your fine")
@@ -222,12 +235,12 @@ def Process_audio():
             elif "who i am" in query:
                 speak("If you talk then definitely you're a human.")
 
-            elif "why you came to world" in query:
+            elif "why are you in the world" in query or "why are you here" in query:
                 speak("I was created by George.")
 
             elif 'who are you' in query or 'what can you do' in query:
                 speak('I am ' + name_assistant + 'your personal assistant. I am programmed to minor tasks like opening '
-                                                    'youtube, google chrome, gmail and search wikipedia etcetra')
+                        'youtube, google chrome, gmail and search wikipedia etcetra')
 
             elif 'reason for you' in query:
                 speak("I was created as a mini project by George.")
@@ -238,7 +251,7 @@ def Process_audio():
                 name_assistant = query
 
             # elif "change name" or 'change your name' or 'change assistants name' in query:
-            #     speak("What would you like to call me, Sir ")
+            #     speak("What would you like to call me")
             #     name_assistant = takeCommand()
             #     speak("Thanks for naming me")
 
@@ -246,9 +259,11 @@ def Process_audio():
                 speak("My friends call me")
                 speak(name_assistant)
                 print("My friends call me", name_assistant)
+                gui("My friends call me", name_assistant)
 
             elif "who made you" in query or "who created you" in query:
                 speak("I have been created by George.")
+                gui("I have been created by George.")
 
 
 
@@ -266,11 +281,14 @@ def Process_audio():
                     results = wikipedia.summary(word, sentences=3)
                     speak("According to Wikipedia")
                     print(results)
+                    gui(results)
                     speak(results)
                 except:
                     speak("Sorry, couldn't find the word")
 
             elif "open wikipedia" in query:
+                speak("Opening Wikipedia.")
+                gui("Opening Wikipedia.")
                 webbrowser.open("wikipedia.com")
 
 
@@ -309,7 +327,7 @@ def Process_audio():
                 # this tells the time
             elif ('what is' and 'the time') in query or 'the time' in query:
                 str_time = datetime.datetime.now().strftime("%H:%M:%S")
-                speak(f"Sir, the time is {str_time}")
+                speak(f"The time is {str_time}")
 
                 # this tells the date
             elif 'date' in query or "what is today's date" in query or "today's date" in query:
@@ -351,15 +369,19 @@ def Process_audio():
                 # this sends a mail to any recipient with an email address
             elif 'send a mail' in query:
                 try:
-                    speak("to whom should i send")
+                    speak("to whom should I send")
+                    gui("to whom should I send ")
                     to = input()
                     speak("What should I say?")
+                    gui("What should I say?")
                     content = takeCommand()
                     sendEmail(to, content)
                     speak("Email has been sent !")
+                    gui("Email has been sent!")
                 except Exception as e:
                     print(e)
                     speak("I am not able to send this email")
+                    gui("I am not able to send this email")
 
                 ###############################################################################
                 # PERFORMING MATHEMATICAL CALCULATIONS #
@@ -374,6 +396,7 @@ def Process_audio():
                 res = client.query(' '.join(query))
                 answer = next(res.results).text
                 print("The answer is " + answer)
+                gui("The answer is " + answer)
                 speak("The answer is " + answer)
 
             elif 'search' in query or 'play' in query:
@@ -384,7 +407,8 @@ def Process_audio():
                 # this tells any random fact when asked
             elif 'fact' in query or 'facts' in query:
                 fact = randfacts.get_fact()
-                print(fact)
+                print("Did you know that, " + fact)
+                gui("Did you know that, " + fact)
                 speak("Did you know that, " + fact)
 
                 # this tells random jokes
@@ -405,10 +429,13 @@ def Process_audio():
 
                     speak('here are some top news from the times of india')
                     print('''=============== TIMES OF INDIA ============''' + '\n')
+                    gui('''=============== TIMES OF INDIA ============''' + '\n')
 
                     for item in data['articles']:
                         print(str(i) + '. ' + item['title'] + '\n')
+                        gui(str(i) + '. ' + item['title'] + '\n')
                         print(item['description'] + '\n')
+                        gui(item['description'] + '\n')
                         speak(str(i) + '. ' + item['title'] + '\n')
                         i += 1
                 except Exception as e:
@@ -460,6 +487,7 @@ def Process_audio():
                 a = int(takeCommand())
                 time.sleep(a)
                 print(a)
+                gui(a)
 
                 ###############################################################################
                 # LOCATION SEARCH #
@@ -469,7 +497,8 @@ def Process_audio():
             elif "where is" in query:
                 query = query.replace("where is", "")
                 location = query
-                speak("User asked to Locate")
+                gui("WHich plcae do you want to locate?")
+                speak("WHich plcae do you want to locate?")
                 speak(location)
                 webbrowser.open("https://www.google.nl/maps/place/" + location + "")
 
@@ -478,6 +507,8 @@ def Process_audio():
                 ###############################################################################
                 # takes a picture
             elif "camera" in query or "take a photo" in query:
+                gui("Opening camera")
+                speak("Opening camera")
                 image = ec.capture(0, "Camera ", "img.jpg")
                 ec.show(image)
 
@@ -487,10 +518,12 @@ def Process_audio():
 
                 # this writes a note in notepad
             elif "write a note" in query:
+                gui("What should i write, please")
                 speak("What should i write, please")
                 note = takeCommand()
                 file = open('next.txt', 'w')
-                speak("Sir, Should i include date and time")
+                gui("Please, Should i include date and time")
+                speak("Please, Should i include date and time")
                 snfm = takeCommand()
                 if 'yes' in snfm or 'sure' in snfm:
                     str_time = datetime.datetime.now().strftime("% H:% M:% S")
@@ -504,6 +537,7 @@ def Process_audio():
                 speak("Showing Notes")
                 file = open("note.txt", "r")
                 print(file.read())
+                gui(file.read())
                 speak(file.read(6))
 
                 ###############################################################################
@@ -513,35 +547,12 @@ def Process_audio():
                 # Gives a report on the weather using the Openweathermap api
             elif "weather" in query:
                 print("Which city do you want to know it's weather?")
+                gui("Which city do you want to know it's weather?")
                 speak("Which city do you want to know it's weather?")
                 city_name = takeCommand()
+                gui(city_name)
                 weather(city_name)
-                
-                
-                # Google Open weather website to get API of Open weather
-                # api_key = "56c5f7d9be5e74534aa8a4aeb839f785"
-                # base_url = "http://api.openweathermap.org/data/2.5/weather?"
-                # speak(" City name")
-                # print("City name: ")
-                # city_name = takeCommand()
-                # complete_url = base_url + "appid =" + api_key + "&q =" + city_name
-                # response = requests.get(complete_url)
-                # x = response.json()
-                # print(x)
-                # if x["code"] != "404":
-                #     y = x["main"]
-                #     current_temperature = y["temp"]
-                #     current_pressure = y["pressure"]
-                #     current_humidiy = y["humidity"]
-                #     z = x["weather"]
-                #     weather_description = z[0]["description"]
-                #     print(" Temperature (in kelvin unit) = " + str(
-                #     current_temperature) + "\n atmospheric pressure (in hPa unit) =" + str(
-                #     current_pressure) + "\n humidity (in percentage) = " + str(
-                #     current_humidiy) + "\n description = " + str(weather_description))
-
-                # else:
-                #     speak(" City Not Found ")
+            
 
             elif "send message " in query:
                     # You need to create an account on Twilio to use this service
@@ -551,15 +562,19 @@ def Process_audio():
 
                 message = client.messages.create(body=takeCommand(), from_='Sender No', to='Receiver No')
                 print(message.sid)
+                gui(message.sid)
 
                 # these are some of the most asked question from Google Assistant
             elif "will you be my gf" in query or "will you be my bf" in query:
+                gui("I'm not sure about, may be you should give me some time")
                 speak("I'm not sure about, may be you should give me some time")
 
             elif "how are you" in query:
+                gui("I'm fine")
                 speak("I'm fine")
 
             elif "i love you" in query:
+                gui("It's hard to understand")
                 speak("It's hard to understand")
 
                 # Answers questions based on "what is"
@@ -569,14 +584,19 @@ def Process_audio():
 
                 try:
                     print(next(res.results).text)
+                    gui(next(res.results).text)
                     speak(next(res.results).text)
                 
                 except StopIteration:
-                    print("No results")
+                    print("I can't find what you're asking for.")
+                    gui("I can't find what you're asking for.")
+                    speak("I can't find what you're asking for.")
 
                 # this exits the application
             elif 'exit' in query or 'bye-bye' in query or 'bye' in query:
+                gui("Thanks for giving me your time")
                 speak("Thanks for giving me your time")
+                
                 exit()
 
 
