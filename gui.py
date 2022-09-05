@@ -1,72 +1,80 @@
-import tkinter as tk
-# from tkinter import *
-# from main import *
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QMovie
+import sys
+from os import environ
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import *
+# import main as m
+# import main
+# from main_program import *
 
-# from distutils import core
-import dearpygui.dearpygui as dpg
-
-
-sample = "Kofi is a boy"
-
-def print_function(text):
-    # print(dpg.get_value(text))    
-    return text
+# class MainThread(QThread):
     
-dpg.create_context()
-dpg.create_viewport(title='Custom Title', width=600, height=300)
+#     def __init__(self):
+#         super(MainThread, self).__init__()
+        
 
-with dpg.window(label="Example Window", width=600, height=300):
-    # dpg.add_text("Hello, world")
-    # dpg.add_button(label="Save")
-    # dpg.add_text(print_function(sample))
-    # dpg.add_combo(print_function(sample))
-    
-    dpg.add_text(print_function(sample))
-    
-    # dpg.add_input_text(label="Output", callback=sample)
-    # dpg.add_input_text(label="string", default_value="Quick brown fox", multiline=True,)
-    # dpg.add_slider_float(label="float", default_value=0.273, max_value=1)
-    
+#     def run(self):
+#         Main.Process_audio()
 
-dpg.setup_dearpygui()
-dpg.show_viewport()
-dpg.start_dearpygui()
-dpg.destroy_context()
+        
 
+# startExe = MainThread()
 
+# Process_audio()
 
-# def main_screen():
-#     global screen
-#     screen = tk.Tk()
-#     screen.title("name_assistant")
-#     screen.geometry("700x550")
-#     screen.iconbitmap('.\app_icon.ico')
+class Ui_Next(object):
 
-#     name_label = tk.Label(text="name_assistant", width=300, bg="black", fg="white", font=("Calibri", 13))
-#     name_label.pack()
+    def setupUi(self, Next):
+        Next.setObjectName("Next")
+        Next.resize(730, 485)
+        self.centralwidget = QtWidgets.QWidget(Next)
+        self.centralwidget.setObjectName("centralwidget")
+        self.bg1 = QtWidgets.QLabel(self.centralwidget)
+        self.bg1.setGeometry(QtCore.QRect(-190, -170, 1171, 811))
+        # self.bg1.setText("")
+        self.bg1.setPixmap(QtGui.QPixmap("C:/Users/Fibre/projectNext/Next/Black_Template.jpg"))
+        self.bg1.setObjectName("bg1")
 
-#     # microphone_photo = PhotoImage(file="assistant_logo.png")
-#     # microphone_button = Button(image=microphone_photo, command=Process_audio)
-#     # microphone_button.pack(pady=10)
+        # create label
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(-10, -60, 601, 451))
+        self.label.setMinimumSize(QtCore.QSize(600, 600))
+        self.label.setMaximumSize(QtCore.QSize(600, 600))
+        self.label.setObjectName("label")
+        
+        Next.setCentralWidget(self.centralwidget)
+        self.statusbar = QtWidgets.QStatusBar(Next)
+        self.statusbar.setObjectName("statusbar")
+        Next.setStatusBar(self.statusbar)
 
-#     # info_button = Button(text="Info", command=info)
-#     # info_button.pack(pady=10)
+        # add label to main window
+        Next.setCentralWidget(self.centralwidget)
 
-#     screen.mainloop()
-
-
-
-# root= tk.Tk()
-
-# root.title("Next")
-# root.geometry("600x300")
-
-# label = tk.Label(root, text=print_function(sample), width=600, height=300)
-
-# label.pack
-
-# root.mainloop
+        # set qmovie as label
+        self.movie = QMovie("C:/Users/Fibre/projectNext/Next/Aqua.gif")
+        self.label.setMovie(self.movie)
+        self.movie.start()
+        
+        
+    # startExe.start()
 
 
+def suppress_qt_warnings():
+    environ["QT_DEVICE_PIXEL_RATIO"] = "0"
+    environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    environ["QT_SCREEN_SCALE_FACTORS"] = "1"
+    environ["QT_SCALE_FACTOR"] = "1"
 
+suppress_qt_warnings()
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    window = QtWidgets.QMainWindow()
+    ui = Ui_Next()
+    ui.setupUi(window)
+    window.show()
+    sys.exit(app.exec_())
+
+# m.Process_audio()
 
