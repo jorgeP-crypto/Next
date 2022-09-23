@@ -57,26 +57,13 @@ def searchYoutube(query):
         web  = "https://www.youtube.com/results?search_query=" + query
         webbrowser.open(web)
         pywhatkit.playonyt(query)
-        speak("Done")
+        speak("Done, Sir")
 
 def searchWikipedia(query):
     if "wikipedia" in query:
         speak("Searching from wikipedia....")
         query = query.replace("wikipedia","")
         query = query.replace("search wikipedia","")
-        query = query.replace("Next","")
-        results = wikipedia.summary(query,sentences = 2)
-        speak("According to wikipedia..")
-        print(results)
-        speak(results)
-        
-
-
-def searchWho(query):
-    if "who is" in query:
-        speak("Searching from wikipedia....")
-        query = query.replace("who is","")
-        query = query.replace("who is","")
         query = query.replace("Next","")
         results = wikipedia.summary(query,sentences = 2)
         speak("According to wikipedia..")

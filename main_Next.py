@@ -166,8 +166,9 @@ def sendEmail(to, content):
 ###############################################################################
 
 def weather(city):
-    city = "Kumasi"
-    res = requests.get(f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid=16f0afad2fd9e18b7aee9582e8ce650b&units=metric").json()
+    # city = "Kumasi"
+    res = requests.get(
+        f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid=16f0afad2fd9e18b7aee9582e8ce650b&units=metric").json()
     temp1 = res["weather"][0]["description"]
     temp2 = res["main"]["temp"]
     print(f"Temperature is {format(temp2)} degree Celsius \nWeather is {format(temp1)}")
@@ -180,12 +181,11 @@ def weather(city):
 ###############################################################################
 
 def translategl(text):
-    speak("SURE")
+    speak("SURE SIR")
     # print(googletrans.LANGUAGES)
     translator = Translator()
     speak("In which language should I translate to?")
-    # lang = input("To_Lang :- ")
-    lang = takeCommand()   
+    lang = input("To_Lang :- ")   
     text_to_translate = translator.translate(text,src = "auto",dest= lang,)
     translated_text = text_to_translate.text
     try : 
@@ -295,13 +295,13 @@ def Process_audio():
                 speak("Next at your service.")
 
             elif "How are you" in query:
-                speak("Hello, how are you ?")
+                speak("Hello sir, how are you ?")
                 if "i am fine" in query:
-                    speak("that's great.")
+                    speak("that's great, sir")
                 elif "how are you" in query:
-                    speak("Perfect.")
+                    speak("Perfect, sir")
                 elif "thank you" in query:
-                    speak("you are welcome.")
+                    speak("you are welcome, sir")
 
 
             elif "who i am" in query:
@@ -373,13 +373,10 @@ def Process_audio():
                 searchYoutube(query)
             
             
-            elif "search" and "wikipedia" in query:
+            elif "wikipedia" in query:
                 from SearchWord import searchWikipedia
                 searchWikipedia(query)
 
-            elif "who is" in query:
-                from SearchWord import searchWho
-                searchWho(query)
 
 
                 ###############################################################################
@@ -615,66 +612,31 @@ def Process_audio():
                 ctypes.windll.user32.LockWorkStation()
 
                 # this shuts down your machine
-            elif "shutdown" in query:
+            elif "shutdown the system" in query:
                 speak("Are You sure you want to shutdown?")
                 # shutdown = input("Do you wish to shutdown your computer? (yes/no)")
                 shutdown = takeCommand()
                 if shutdown == "yes":
-                    speak("Shoutting down.")
-                    os.system("shutdown /s /t 10")
+                    os.system("shutdown /s /t 1")
 
                 elif shutdown == "no":
-                    break
-                    
+                    # break
+                    pass
 
                 # this restarts your device
-            # elif "restart" in query:
-            #     subprocess.call(["shutdown", "/r"])
-
             elif "restart" in query:
-                speak("Are You sure you want to restart?")
-                # shutdown = input("Do you wish to shutdown your computer? (yes/no)")
-                restart = takeCommand()
-                if restart == "yes":
-                    speak("Restarting your computer.")
-                    os.system("shutdown /r /t 10")
+                subprocess.call(["shutdown", "/r"])
 
-                elif restart == "no":
-                    break
-            
-            
                 # this puts your device to sleep
-            # elif "hibernate" in query or "sleep" in query:
-            #     speak("Hibernating")
-            #     subprocess.call("shutdown / h")
-                
-            elif "hibernate" in query:
-                speak("Are You sure you want to hibernate?")
-                # shutdown = input("Do you wish to shutdown your computer? (yes/no)")
-                hibernate = takeCommand()
-                if hibernate == "yes":
-                    speak("Hibernating your Computer.")
-                    os.system("shutdown /h /t 10")
-
-                elif hibernate == "no":
-                    break
+            elif "hibernate" in query or "sleep" in query:
+                speak("Hibernating")
+                subprocess.call("shutdown / h")
 
                 # this signs you out of your current device
-            # elif "log off" in query or "sign out" in query:
-            #     speak("Make sure all the application are closed before sign-out")
-            #     time.sleep(5)
-            #     subprocess.call(["shutdown", "/l"])
-                
-            elif "log off" in query:
-                speak("Are You sure you want to log off?")
-                # shutdown = input("Do you wish to shutdown your computer? (yes/no)")
-                log_off = takeCommand()
-                if log_off == "yes":
-                    speak("Logging off. Bye.")
-                    os.system("shutdown /l /t 10")
-
-                elif log_off == "no":
-                    break
+            elif "log off" in query or "sign out" in query:
+                speak("Make sure all the application are closed before sign-out")
+                time.sleep(5)
+                subprocess.call(["shutdown", "/l"])
 
                 # this empties recycle bin
             elif 'empty recycle bin' in query:
@@ -778,13 +740,12 @@ def Process_audio():
 
                 # Gives a report on the weather using the Openweathermap api
             elif "weather" in query:
-                # print("Which city do you want to know it's weather?")
+                print("Which city do you want to know it's weather?")
                 # gui.gui("Which city do you want to know it's weather?")
-                # speak("Which city do you want to know it's weather?")
-                # city_name = takeCommand()
+                speak("Which city do you want to know it's weather?")
+                city_name = takeCommand()
                 # gui.gui(city_name)
-                # weather(city_name)
-                weather(query)
+                weather(city_name)
             
 
             # elif "send message " in query:
@@ -811,7 +772,7 @@ def Process_audio():
                 speak("It's hard to understand")
 
                 # Answers questions based on "what is"
-            elif "what is" in query:
+            elif "what is" in query or "who is" in query:
                 client = wolframalpha.Client("XV3L68-YK29VUH7V9")
                 res = client.query(query)
 
