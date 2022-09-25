@@ -2,16 +2,12 @@
 # IMPORTING REQUIRED API's #
 ###############################################################################
 
-
-
 import random
 import subprocess
-import tkinter as tk
 import wolframalpha
 import pyttsx3
 from gtts import gTTS
 import googletrans
-from fnmatch import translate
 from googletrans import Translator
 from tkinter import *
 import json
@@ -26,7 +22,6 @@ import smtplib
 import ctypes
 import time
 import requests
-# import shutil
 from twilio.rest import Client
 from ecapture import ecapture as ec
 from urllib.request import urlopen
@@ -340,6 +335,35 @@ def Process_audio():
 
 
                 ###############################################################################
+                # OPENING WEBSITES OF INTEREST #
+                ###############################################################################
+
+                # this opens YouTube
+            # elif 'open' and 'youtube' in query:
+            #     speak("Here you go to Youtube\n")
+            #     webbrowser.open("https://www.youtube.com")
+
+            #     # this opens Google
+            # elif 'open' and 'google' in query:
+            #     speak("Here you go to Google\n")
+            #     webbrowser.open("https://www.google.com")
+
+            # elif 'open gmail' in query:
+            #     webbrowser.open_new_tab("https://www.mail.google.com")
+            #     speak("Google Mail open now")
+            #     time.sleep(5)
+
+            # elif 'open netflix' in query:
+            #     webbrowser.open_new_tab("https://www.netflix.com/browse")
+            #     speak("Netflix open now")
+
+            # elif 'open stackoverflow' in query:
+            #     speak("Here you go to Stack Over flow.Happy coding")
+            #     webbrowser.open("https://www.stackoverflow.com")
+
+
+
+                ###############################################################################
                 # WIKIPEDIA SEARCH #
                 ###############################################################################
 
@@ -384,28 +408,27 @@ def Process_audio():
                 ###############################################################################
 
                 # this opens YouTube
-            elif 'open youtube' in query:
+            elif 'open' and 'youtube' in query:
                 speak("Here you go to Youtube\n")
-                webbrowser.open("youtube.com")
+                webbrowser.open("https://www.youtube.com")
 
                 # this opens Google
-            elif 'open google' in query:
+            elif 'open' and 'google' in query:
                 speak("Here you go to Google\n")
-                webbrowser.open("google.com")
+                webbrowser.open("https://www.google.com")
 
             elif 'open gmail' in query:
-                webbrowser.open_new_tab("mail.google.com")
+                webbrowser.open_new_tab("https://www.mail.google.com")
                 speak("Google Mail open now")
                 time.sleep(5)
 
             elif 'open netflix' in query:
-                webbrowser.open_new_tab("netflix.com/browse")
+                webbrowser.open_new_tab("https://www.netflix.com/browse")
                 speak("Netflix open now")
 
             elif 'open stackoverflow' in query:
                 speak("Here you go to Stack Over flow.Happy coding")
-                webbrowser.open("stackoverflow.com")
-
+                webbrowser.open("https://www.stackoverflow.com")
 
 
 
@@ -681,7 +704,7 @@ def Process_audio():
                 query = query.replace("where is", "")
                 location = query
                 # gui.gui("WHich plcae do you want to locate?")
-                speak("WHich plcae do you want to locate?")
+                speak("Which plcae do you want to locate?")
                 speak(location)
                 webbrowser.open("https://www.google.nl/maps/place/" + location + "")
 
