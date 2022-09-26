@@ -299,7 +299,7 @@ def Process_audio():
                     speak("you are welcome, sir")
 
 
-            elif "who i am" in query:
+            elif "who am I" in query:
                 speak("If you talk then definitely you're a human.")
 
             elif "why are you in the world" in query or "why are you here" in query:
@@ -368,24 +368,25 @@ def Process_audio():
                 ###############################################################################
 
                 # This searches a word and opens wikipedia.
-            # elif 'search ' and 'wikipedia' in query:
-            #     try:
-            #         speak("What word should I search?")
-            #         word = takeCommand()
-            #             # query = query.replace("wikipedia", "")
-            #         speak('Searching Wikipedia...')
-            #         results = wikipedia.summary(word, sentences=3)
-            #         speak("According to Wikipedia")
-            #         print(results)
-            #         # gui.gui(results)
-            #         speak(results)
-            #     except:
-            #         speak("Sorry, couldn't find the word")
+            elif 'search ' and 'wikipedia' in query:
+                
+                try:
+                    speak("What word should I search?")
+                    word = takeCommand()
+                        # query = query.replace("wikipedia", "")
+                    speak('Searching Wikipedia...')
+                    results = wikipedia.summary(word, sentences=3)
+                    speak("According to Wikipedia")
+                    print(results)
+                    # gui.gui(results)
+                    speak(results)
+                except:
+                    speak("Sorry, couldn't find the word")
 
-            # elif "open wikipedia" in query:
-            #     speak("Opening Wikipedia.")
-            #     # gui.gui("Opening Wikipedia.")
-            #     webbrowser.open("wikipedia.com")
+            elif "open wikipedia" in query:
+                speak("Opening Wikipedia.")
+                # gui.gui("Opening Wikipedia.")
+                webbrowser.open("wikipedia.com")
 
             elif "google" in query:
                 from SearchWord import searchGoogle
@@ -397,9 +398,9 @@ def Process_audio():
                 searchYoutube(query)
             
             
-            elif "wikipedia" in query:
-                from SearchWord import searchWikipedia
-                searchWikipedia(query)
+            # elif "wikipedia" in query:
+            #     from SearchWord import searchWikipedia
+            #     searchWikipedia(query)
 
 
 
@@ -643,8 +644,8 @@ def Process_audio():
                     os.system("shutdown /s /t 1")
 
                 elif shutdown == "no":
-                    # break
-                    pass
+                    break
+                    #pass
 
                 # this restarts your device
             elif "restart" in query:
@@ -763,10 +764,11 @@ def Process_audio():
 
                 # Gives a report on the weather using the Openweathermap api
             elif "weather" in query:
-                print("Which city do you want to know it's weather?")
+                # print("Which city do you want to know it's weather?")
                 # gui.gui("Which city do you want to know it's weather?")
-                speak("Which city do you want to know it's weather?")
-                city_name = takeCommand()
+                # speak("Which city do you want to know it's weather?")
+                # city_name = takeCommand()
+                city_name ="Kumasi"
                 # gui.gui(city_name)
                 weather(city_name)
             
